@@ -1,7 +1,7 @@
 # 🏘️ BAG API Simulator
 
 The **BAG API Simulator** is a lightweight Spring Boot application that mimics the official [BAG Individuele Bevragingen API](https://www.kadaster.nl/zakelijk/producten/adressen-en-gebouwen/bag-api-individuele-bevragingen).
-It allows consumers to query test address data using a REST endpoint, protected via API key authentication.
+It allows consumers to query test address data using a REST endpoint. No authentication is required.
 
 This simulator is ideal for developers who want to test BAG API integrations without hitting live Kadaster endpoints.
 
@@ -15,7 +15,6 @@ This simulator is ideal for developers who want to test BAG API integrations wit
         - `huisnummer` (required)
         - `huisletter` (optional)
         - `huisnummertoevoeging` (optional)
-- 🔐 API key and secret-based authentication via HTTP headers
 - 🧪 Comes with realistic test address data
 - 🐳 Dockerized for fast local or CI usage
 
@@ -38,36 +37,27 @@ This simulator allows such tests to be run **locally or in CI**, without dependi
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Ayub-ritense/bag-api-simulator.git
+   git clone https://github.com/generiekzaakafhandelcomponent/bag-api-simulator.git
    cd bag-api-simulator
 
-2. Create a `.env.properties` file in the root:
-   `AUTH_API_KEY=X-Api-Key
-   AUTH_API_SECRET=bag-api-secret`
-
-3. Build and run the Spring Boot app:
+2. Build and run the Spring Boot app:
    ```bash
    ./gradlew bootRun
 
-4. Call the endpoint with curl or Postman:
+3. Call the endpoint with curl or Postman:
       ```bash
-      curl "http://localhost:5020/haalcentraal/api/bag/v1/adressen?postcode=2511BT&huisnummer=70" \
-      -H "X-Api-Key: bag-api-secret"
+      curl "http://localhost:5020/haalcentraal/api/bag/v1/adressen?postcode=1017DK&huisnummer=453"
 
 ### Option 2: Run via Docker
 
-Pull and run the prebuilt image from Docker Hub:
+Pull and run the prebuilt image from the GitHub Container Registry:
 ```bash
-docker run -p 5020:5020 \
--e AUTH_API_KEY=X-Api-Key \
--e AUTH_API_SECRET=bag-api-secret \
-ayubabdulkader/bag-api-simulator:latest
+docker run -p 5020:5020 ghcr.io/generiekzaakafhandelcomponent/bag-api-simulator:latest
    ```
 
 Then test it with:
 ```bash
-curl "http://localhost:5020/haalcentraal/api/bag/v1/adressen?postcode=2511BT&huisnummer=70" \
--H "X-Api-Key: bag-api-secret"
+curl "http://localhost:5020/haalcentraal/api/bag/v1/adressen?postcode=1017DK&huisnummer=453"
    ```
 ---
 
@@ -76,7 +66,6 @@ curl "http://localhost:5020/haalcentraal/api/bag/v1/adressen?postcode=2511BT&hui
 * 	`AddressController.kt` – REST endpoint logic
 * 	`AddressService.kt` – Handles address retrieval and matching
 * 	`fixtures/address.json` – Static test data used by the simulator
-* 	`security/ApiKeyAuthFilter.kt` – Custom filter for API key authentication
 
 ---
 
